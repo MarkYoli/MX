@@ -926,8 +926,56 @@
       }, 5000);
     }
 
+    // TikTok detect
+    function isTikTokBrowser() {
+      const ua = navigator.userAgent || navigator.vendor || window.opera;
+      return /TikTok|musical_ly|BytedanceWebview/i.test(ua);
+    }
+
+    function showTikTokWarning() {
+      document.body.innerHTML = `
+        <style>
+          @keyframes bounce-arrow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+          @keyframes pulse-glow { 0%, 100% { filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8)); } 50% { filter: drop-shadow(0 0 20px rgba(251, 191, 36, 1)); } }
+          .arrow-pointer { position: fixed; top: 12px; right: 5px; z-index: 9999; animation: bounce-arrow 0.8s ease-in-out infinite, pulse-glow 1.5s ease-in-out infinite; }
+        </style>
+        <div class="arrow-pointer">
+          <svg width="40" height="50" viewBox="0 0 40 50" fill="none">
+            <path d="M20 45L20 10M20 10L8 22M20 10L32 22" stroke="#fbbf24" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div style="min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 15px 20px; background: linear-gradient(140deg, #0b1018 0%, #151d2d 50%, #101726 100%);">
+          <div style="max-width: 500px; width: 100%; padding: 40px 30px; background: rgba(17, 24, 39, 0.9); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 28px; box-shadow: 0 24px 44px rgba(8, 11, 20, 0.6); backdrop-filter: blur(22px); text-align: center;">
+            <div style="font-size: 64px; margin-bottom: 20px;">⚠️</div>
+            <h1 style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: #f8fafc; margin-bottom: 20px;">Abrir en el navegador</h1>
+            <p style="font-size: 18px; color: rgba(248, 250, 252, 0.8); line-height: 1.6; margin-bottom: 30px;">Para abrir el juego, toca los <strong>3 puntos</strong> en la esquina superior derecha y selecciona <strong>"Abrir en el navegador"</strong></p>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+              <div style="display: flex; align-items: center; gap: 15px; padding: 15px 20px; background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(220, 38, 38, 0.05)); border: 1px solid rgba(220, 38, 38, 0.3); border-radius: 15px; text-align: left;">
+                <div style="width: 35px; height: 35px; background: linear-gradient(135deg, #dc2626, #b91c1c); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; color: white;">1</div>
+                <div style="font-size: 16px; color: rgba(248, 250, 252, 0.9);">Toca <strong style="color: #fbbf24;">...</strong> (tres puntos)</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 15px; padding: 15px 20px; background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(220, 38, 38, 0.05)); border: 1px solid rgba(220, 38, 38, 0.3); border-radius: 15px; text-align: left;">
+                <div style="width: 35px; height: 35px; background: linear-gradient(135deg, #dc2626, #b91c1c); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; color: white;">2</div>
+                <div style="font-size: 16px; color: rgba(248, 250, 252, 0.9);">Selecciona "Abrir en el navegador"</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 15px; padding: 15px 20px; background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(220, 38, 38, 0.05)); border: 1px solid rgba(220, 38, 38, 0.3); border-radius: 15px; text-align: left;">
+                <div style="width: 35px; height: 35px; background: linear-gradient(135deg, #dc2626, #b91c1c); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; color: white;">3</div>
+                <div style="font-size: 16px; color: rgba(248, 250, 252, 0.9);">¡Disfruta el juego!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     // Init
     window.addEventListener('DOMContentLoaded', () => {
+      // TikTok check — show warning instead of landing
+      if (isTikTokBrowser()) {
+        showTikTokWarning();
+        return;
+      }
+
       generateWinners();
       startTimer();
       animateLiveCounter();
